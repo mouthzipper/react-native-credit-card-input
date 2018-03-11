@@ -91,6 +91,8 @@ export default class CardView extends Component {
     fontFamily: PropTypes.string,
     imageFront: PropTypes.number,
     imageBack: PropTypes.number,
+    requiresNumber: PropTypes.bool,
+    requiresCVC: PropTypes.bool
   };
 
   static defaultProps = {
@@ -106,12 +108,14 @@ export default class CardView extends Component {
     fontFamily: Platform.select({ ios: "Courier", android: "monospace" }),
     imageFront: require("../images/card-front.png"),
     imageBack: require("../images/card-back.png"),
+    requiresNumber: true,
+    requiresCVC: true
   };
 
   render() {
     const { focused,
       brand, name, number, expiry, cvc,
-      placeholder, imageFront, imageBack, scale, fontFamily } = this.props;
+      placeholder, imageFront, imageBack, scale, fontFamily, requiresNumber, requiresCVC } = this.props;
 
     const isAmex = brand === "american-express";
     const shouldFlip = !isAmex && focused === "cvc";
@@ -133,11 +137,15 @@ export default class CardView extends Component {
                   flip={shouldFlip}>
           <ImageBackground style={[BASE_SIZE, s.cardFace, transform]}
                            source={imageFront}>
-            <Image style={[s.icon]}
+            { requiresNumber &&
+              <Image style={[s.icon]}
                    source={{ uri: Icons[brand] }} />
-            <Text style={[s.baseText, { fontFamily }, s.number, !number && s.placeholder, focused === "number" && s.focused]}>
-              { !number ? placeholder.number : number }
-            </Text>
+            }
+            { requiresNumber &&
+              <Text style={[s.baseText, { fontFamily }, s.number, !number && s.placeholder, focused === "number" && s.focused]}>
+                { !number ? placeholder.number : number }
+              </Text>
+            }
             <Text style={[s.baseText, { fontFamily }, s.name, !name && s.placeholder, focused === "name" && s.focused]}
                   numberOfLines={1}>
               { !name ? placeholder.name : name.toUpperCase() }
@@ -148,7 +156,7 @@ export default class CardView extends Component {
             <Text style={[s.baseText, { fontFamily }, s.expiry, !expiry && s.placeholder, focused === "expiry" && s.focused]}>
               { !expiry ? placeholder.expiry : expiry }
             </Text>
-            { isAmex &&
+            { isAmex && requiresCVC &&
             <Text style={[s.baseText, { fontFamily }, s.amexCVC, !cvc && s.placeholder, focused === "cvc" && s.focused]}>
               { !cvc ? placeholder.cvc : cvc }
             </Text> }

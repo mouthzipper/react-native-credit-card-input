@@ -109,10 +109,9 @@ export default class CreditCardInput extends Component {
     const {
       cardImageFront, cardImageBack, inputContainerStyle,
       values: { number, expiry, cvc, name, type }, focused,
-      requiresName, requiresCVC, requiresPostalCode,
+      requiresName, requiresCVC, requiresPostalCode, requiresNumber,
       cardScale, cardFontFamily
     } = this.props;
-
     return (
       <View style={s.container}>
         <CreditCard focused={focused}
@@ -124,6 +123,8 @@ export default class CreditCardInput extends Component {
             name={requiresName ? name : " "}
             number={number}
             expiry={expiry}
+            requiresNumber={requiresNumber}
+            requiresCVC={requiresCVC}
             cvc={cvc} />
         <ScrollView ref="Form"
             horizontal={false}
@@ -131,8 +132,11 @@ export default class CreditCardInput extends Component {
             scrollEnabled={false}
             showsHorizontalScrollIndicator={false}
             style={s.form}>
-          <CCInput {...this._inputProps("number")}
-              containerStyle={[s.inputContainer, inputContainerStyle, { flex: 1, flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderBottomWidth: 1,borderColor: '#e3e3e3', width: CARD_NUMBER_INPUT_WIDTH }]} />
+          {
+            requiresNumber &&
+            <CCInput {...this._inputProps("number")}
+             containerStyle={[s.inputContainer, inputContainerStyle, { flex: 1, flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderBottomWidth: 1,borderColor: '#e3e3e3', width: CARD_NUMBER_INPUT_WIDTH }]} />
+          }
           <CCInput {...this._inputProps("expiry")}
               containerStyle={[s.inputContainer, inputContainerStyle,{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1, borderColor: '#e3e3e3', width: CARD_NUMBER_INPUT_WIDTH }]} />
           { requiresCVC &&
