@@ -13,6 +13,7 @@ import ReactNative, {
 import CreditCard from "./CardView";
 import CCInput from "./CCInput";
 import { InjectedProps } from "./connectToState";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const s = StyleSheet.create({
   container: {
@@ -126,30 +127,32 @@ export default class CreditCardInput extends Component {
             requiresNumber={requiresNumber}
             requiresCVC={requiresCVC}
             cvc={cvc} />
-        <ScrollView ref="Form"
-            horizontal={false}
-            keyboardShouldPersistTaps="always"
-            scrollEnabled={false}
-            showsHorizontalScrollIndicator={false}
-            style={s.form}>
-          {
-            requiresNumber &&
-            <CCInput {...this._inputProps("number")}
-             containerStyle={[s.inputContainer, inputContainerStyle, { flex: 1, flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderBottomWidth: 1,borderColor: '#e3e3e3', width: CARD_NUMBER_INPUT_WIDTH }]} />
-          }
-          <CCInput {...this._inputProps("expiry")}
-              containerStyle={[s.inputContainer, inputContainerStyle,{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1, borderColor: '#e3e3e3', width: CARD_NUMBER_INPUT_WIDTH }]} />
-          { requiresCVC &&
-            <CCInput {...this._inputProps("cvc")}
-                containerStyle={[s.inputContainer, inputContainerStyle,{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1,borderColor: '#e3e3e3', width: CARD_NUMBER_INPUT_WIDTH }]} /> }
-          { requiresName &&
-            <CCInput {...this._inputProps("name")}
-                keyboardType="default"
-                containerStyle={[s.inputContainer, inputContainerStyle,{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1,borderColor: '#e3e3e3', width: CARD_NUMBER_INPUT_WIDTH }]} /> }
-          { requiresPostalCode &&
-            <CCInput {...this._inputProps("postalCode")}
-                containerStyle={[s.inputContainer, inputContainerStyle, { flex: 1, flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1,borderColor: '#e3e3e3', width: CARD_NUMBER_INPUT_WIDTH }]} /> }
-        </ScrollView>
+        <KeyboardAwareScrollView enableOnAndroid={true} enableAutomaticScroll={true}>
+          <ScrollView ref="Form"
+              horizontal={false}
+              keyboardShouldPersistTaps="always"
+              scrollEnabled={false}
+              showsHorizontalScrollIndicator={false}
+              style={s.form}>
+            {
+              requiresNumber &&
+              <CCInput {...this._inputProps("number")}
+               containerStyle={[s.inputContainer, inputContainerStyle, { flex: 1, flexDirection: 'row', justifyContent: 'space-between', borderTopWidth: 1, borderBottomWidth: 1,borderColor: '#e3e3e3', width: CARD_NUMBER_INPUT_WIDTH }]} />
+            }
+            <CCInput {...this._inputProps("expiry")}
+                containerStyle={[s.inputContainer, inputContainerStyle,{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1, borderColor: '#e3e3e3', width: CARD_NUMBER_INPUT_WIDTH }]} />
+            { requiresCVC &&
+              <CCInput {...this._inputProps("cvc")}
+                  containerStyle={[s.inputContainer, inputContainerStyle,{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1,borderColor: '#e3e3e3', width: CARD_NUMBER_INPUT_WIDTH }]} /> }
+            { requiresName &&
+              <CCInput {...this._inputProps("name")}
+                  keyboardType="default"
+                  containerStyle={[s.inputContainer, inputContainerStyle,{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1,borderColor: '#e3e3e3', width: CARD_NUMBER_INPUT_WIDTH }]} /> }
+            { requiresPostalCode &&
+              <CCInput {...this._inputProps("postalCode")}
+                  containerStyle={[s.inputContainer, inputContainerStyle, { flex: 1, flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1,borderColor: '#e3e3e3', width: CARD_NUMBER_INPUT_WIDTH }]} /> }
+          </ScrollView>
+        </KeyboardAwareScrollView>
       </View>
     );
   }
